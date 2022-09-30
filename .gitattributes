@@ -1,0 +1,32 @@
+*               text=auto
+
+*.py            text diff=python
+*.sh            text diff=bash eol=lf
+
+*.html          text diff=html
+*.htm           text diff=html
+*.xhtml         text diff=html
+*.css           text diff=css
+*.js            text
+*.coffee        text
+*.less          text
+*.php           text diff=php
+*.sass          text
+*.scss          text diff=css
+*.ts            text
+
+*.yml           text
+*.txt           text
+*.md            text diff=markdown
+COPYING         text
+LICENSE         text
+
+Makefile        text eol=lf
+Dockerfile      text eol=lf
+.dockerignore   text
+.editorconfig   text
+.gitattributes  text export-ignore
+.gitignore      text export-ignore
+.gitkeep        text export-ignore
+.gitmodules     text export-ignore
+
