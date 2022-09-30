@@ -1,0 +1,77 @@
+services:
+  db:
+    image: postgres:latest
+    hostname: db
+    env_file: .env
+    volumes:
+    - "postgres_data:/var/lib/postgresql/data/"
+    expose:
+    - "5432"
+    ports:
+    - "5432:5432"
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: rabbitmq
+    env_file: .env
+    volumes:
+    - "$PWD/rabbitmq/fossnews.conf:/etc/rabbitmq/conf.d/90-fossnews.conf"
+    expose:
+    - "5672"
+    - "15672"
+    restart: unless-stopped
+
+  celery_worker:
+    image: permlug/fossnews:latest
+    build: .
+    command: celery-worker.sh
+    hostname: worker
+    env_file: .env
+    depends_on:
+    - db
+    - rabbitmq
+    restart: unless-stopped
+
+  celery_beat:
+    image: permlug/fossnews:latest
+    build: .
+    command: celery-beat.sh
+    hostname: beat
+    env_file: .env
+    depends_on:
+    - db
+    - rabbitmq
+    restart: unless-stopped
+
+  fossnews:
+    image: permlug/fossnews:latest
+    build: .
+    hostname: fossnews
+    env_file: .env
+    volumes:
+    - "static:$DJANGO_STATIC_ROOT"
+    expose:
+    - "$DJANGO_PORT"
+    depends_on:
+    - db
+    - rabbitmq
+    - celery_worker
+    - celery_beat
+    restart: unless-stopped
+
+  nginx:
+    image: permlug/fossnews-nginx:latest
+    build: nginx
+    env_file: .env
+    volumes:
+    - "static:$DJANGO_STATIC_ROOT"
+    ports:
+    - "8800:$DJANGO_PORT"
+    depends_on:
+    - fossnews
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  static:

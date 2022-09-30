@@ -1,0 +1,6 @@
+*
+!bin/
+!fossnews/
+!manage.py
+!requirements.txt
+fossnews/**/__pycache__/

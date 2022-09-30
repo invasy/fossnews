@@ -1,0 +1,16 @@
+- model: gatherer.source
+  pk: 1
+  fields:
+    enabled: true
+    title: TechRadar
+    url: "https://www.techradar.com/rss"
+    type: rss
+    language: en
+- model: gatherer.source
+  pk: 2
+  fields:
+    enabled: true
+    title: OpenNet
+    url: "https://www.opennet.ru/opennews/opennews_all.rss"
+    type: rss
+    language: ru
